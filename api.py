@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Image Text Extraction API
+Image Text Extraction API - Railway Optimized
 Production-ready Flask API for extracting text from images
 """
 
@@ -10,15 +10,20 @@ import json
 import tempfile
 from datetime import datetime
 from pathlib import Path
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import uuid
+
+# Set environment variables for Railway optimization
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
+os.environ['PYTHONUNBUFFERED'] = '1'
 
 # Import our text extraction module
 from extract_text import extract_text_advanced
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # 8MB max file size (reduced for Railway)
 
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'tif'}
@@ -29,11 +34,11 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def setup_tesseract():
-    """Setup tesseract path"""
+    """Setup tesseract path for Railway"""
     possible_paths = [
+        '/usr/bin/tesseract',
         '/usr/local/bin/tesseract',
-        '/opt/homebrew/bin/tesseract',
-        '/usr/bin/tesseract'
+        '/opt/homebrew/bin/tesseract'
     ]
     
     for path in possible_paths:
@@ -50,7 +55,8 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'timestamp': datetime.now().isoformat(),
-        'version': '1.0.0'
+        'version': '1.0.0',
+        'platform': 'Railway'
     })
 
 @app.route('/extract', methods=['POST'])
@@ -120,7 +126,7 @@ def extract_text():
                         lines = content.split('\n')
                         in_text_section = False
                         for line in lines:
-                            if 'EXTRACTED TEXT:' in line:
+                            if 'RECONSTRUCTED TEXT:' in line:
                                 in_text_section = True
                                 continue
                             elif in_text_section and line.startswith('RAW'):
@@ -216,7 +222,7 @@ def extract_text_batch():
                                 lines = content.split('\n')
                                 in_text_section = False
                                 for line in lines:
-                                    if 'EXTRACTED TEXT:' in line:
+                                    if 'RECONSTRUCTED TEXT:' in line:
                                         in_text_section = True
                                         continue
                                     elif in_text_section and line.startswith('RAW'):
@@ -257,11 +263,12 @@ def api_info():
         'name': 'Image Text Extraction API',
         'version': '1.0.0',
         'description': 'Extract text from images using advanced OCR',
+        'platform': 'Railway',
         'capabilities': {
             'single_image': True,
             'batch_processing': True,
             'supported_formats': list(ALLOWED_EXTENSIONS),
-            'max_file_size': '16MB',
+            'max_file_size': '8MB',
             'accuracy': '75%+'
         },
         'endpoints': {
@@ -277,7 +284,7 @@ def too_large(e):
     """Handle file too large error"""
     return jsonify({
         'error': 'File too large',
-        'message': 'Maximum file size is 16MB'
+        'message': 'Maximum file size is 8MB'
     }), 413
 
 @app.errorhandler(404)
@@ -300,8 +307,10 @@ if __name__ == '__main__':
     # Setup tesseract
     if not setup_tesseract():
         print("Warning: Tesseract not found. Please install tesseract.")
-        print("On macOS: brew install tesseract")
-        print("On Ubuntu: sudo apt-get install tesseract-ocr")
+        print("Railway should have tesseract pre-installed.")
+    
+    # Get port from environment variable (Railway requirement)
+    port = int(os.environ.get('PORT', 5000))
     
     # Run the app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=port)
