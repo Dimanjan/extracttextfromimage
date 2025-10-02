@@ -24,13 +24,9 @@ That's it! The system automatically processes all images and extracts text with 
 imgtext/
 ├── image_samples/          # ← Put your images here
 ├── output/                 # ← Results appear here
-├── extract_text.py         # Main extraction script (full version)
+├── extract_text.py         # Main extraction script
 ├── run_extraction.sh       # Easy run command
-├── requirements.txt        # Full dependencies
-├── pythonanywhere/         # ← PythonAnywhere optimized version
-│   ├── extract_text_pythonanywhere.py
-│   ├── requirements_lightweight.txt
-│   └── README.md
+├── requirements.txt        # Dependencies
 └── README.md               # This file
 ```
 
@@ -80,35 +76,19 @@ imgtext/
 - ✅ Price: "Rs 17000/"
 - ✅ Logo text: "Ashwi Furniture"
 
-## 🚀 Two Versions Available
+## 🛠️ Installation & Setup
 
-### 🏆 Full Version (This Folder)
-- **High Accuracy**: 75%+ text extraction
-- **Advanced Features**: EasyOCR + Tesseract + OpenCV
-- **Best For**: Powerful hardware, high accuracy needs
-- **Requirements**: 2GB+ RAM, heavy dependencies
-
-### 🚀 PythonAnywhere Version (`/pythonanywhere/` folder)
-- **Lightweight**: 40-50% text extraction
-- **Optimized**: Tesseract + PIL only
-- **Best For**: Free hosting, limited resources
-- **Requirements**: 50MB RAM, minimal dependencies
-
-## ��️ Installation & Setup
-
-### Full Version Setup
-
-**Prerequisites:**
+### Prerequisites
 - Python 3.8 or higher
 - 2GB+ RAM recommended
 - 1GB+ free disk space
 
-**Step 1: Install Dependencies**
+### Step 1: Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-**Step 2: Install Tesseract OCR**
+### Step 2: Install Tesseract OCR
 
 **macOS:**
 ```bash
@@ -123,14 +103,10 @@ sudo apt-get install tesseract-ocr
 **Windows:**
 Download from: https://github.com/UB-Mannheim/tesseract/wiki
 
-**Step 3: Ready to Use!**
+### Step 3: Ready to Use!
 ```bash
 ./run_extraction.sh
 ```
-
-### PythonAnywhere Version Setup
-
-See the `pythonanywhere/` folder for lightweight deployment instructions.
 
 ## 📖 How to Use
 
@@ -216,19 +192,12 @@ Results include:
 
 ## 📋 Dependencies
 
-### Full Version
 ```
 Pillow>=9.0.0          # Image processing
-pytesseract>=0.3.10   # Tesseract OCR wrapper
-opencv-python>=4.5.0  # Computer vision
-easyocr>=1.6.0        # Deep learning OCR
-numpy>=1.21.0         # Numerical computing
-```
-
-### PythonAnywhere Version
-```
-Pillow>=9.0.0         # Image processing
-pytesseract>=0.3.10   # Tesseract OCR wrapper
+pytesseract>=0.3.10     # Tesseract OCR wrapper
+opencv-python>=4.5.0    # Computer vision
+easyocr>=1.6.0          # Deep learning OCR
+numpy>=1.21.0           # Numerical computing
 ```
 
 ## 🔬 Technical Architecture
