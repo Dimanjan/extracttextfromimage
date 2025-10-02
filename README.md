@@ -39,13 +39,41 @@ imgtext/
 
 ## 📊 Example Results
 
-**Input**: Furniture catalog image with scattered text
-**Output**: 
+### Example 1: Furniture Catalog with Product Details
+
+**Input Image:**
+![Furniture Catalog](image_samples/Screenshot%202025-10-02%20at%2010.57.19.png)
+
+**Extracted Text:**
 ```
 1. ASHWI FURNITURE BUTTERFLY SOFA 3.0 Rs 17000/
 2. Hugged by comfort, wrapped in style
 3. height: 34 inch width: 32 inch length: 7.4 ft
 ```
+
+**What was captured:**
+- ✅ Product name: "BUTTERFLY SOFA"
+- ✅ Brand: "ASHWI FURNITURE" 
+- ✅ Price: "Rs 17000/"
+- ✅ Dimensions: "height: 34 inch width: 32 inch length: 7.4 ft"
+- ✅ Tagline: "Hugged by comfort, wrapped in style"
+
+### Example 2: Product Showcase with Branding
+
+**Input Image:**
+![Product Showcase](image_samples/Screenshot%202025-10-02%20at%2010.57.28.png)
+
+**Extracted Text:**
+```
+1. ASHWI FURNITURE BED BENCH Rs 17000/
+2. Ashwi Furniture
+```
+
+**What was captured:**
+- ✅ Product: "BED BENCH"
+- ✅ Brand: "ASHWI FURNITURE"
+- ✅ Price: "Rs 17000/"
+- ✅ Logo text: "Ashwi Furniture"
 
 ## 🛠️ Installation & Setup
 
@@ -161,7 +189,7 @@ Results include:
 - **Memory**: 2GB+ RAM recommended for large images
 - **Speed**: ~30-60 seconds per image (varies by complexity)
 
-## �� Dependencies
+## 📋 Dependencies
 
 ```
 Pillow>=9.0.0          # Image processing
@@ -211,7 +239,7 @@ numpy>=1.21.0           # Numerical computing
 - **Supported**: Scattered text, varying sizes, mixed fonts
 - **Formats**: JPG, PNG, BMP, TIFF, GIF
 
-## �� Contributing
+## 🤝 Contributing
 
 This is a proof-of-concept project. For improvements:
 1. Fork the repository
