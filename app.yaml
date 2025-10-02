@@ -1,0 +1,22 @@
+runtime: python312
+
+env_variables:
+  PORT: 8080
+  PYTHONUNBUFFERED: 1
+  OMP_NUM_THREADS: 4
+  MKL_NUM_THREADS: 4
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.6
+
+resources:
+  cpu: 2
+  memory_gb: 2
+  disk_size_gb: 10
+
+handlers:
+- url: /.*
+  script: auto
+  secure: always
