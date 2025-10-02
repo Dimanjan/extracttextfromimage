@@ -1,0 +1,38 @@
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install minimal system dependencies
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    libgomp1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy lightweight requirements
+COPY requirements_lightweight.txt .
+RUN pip install --no-cache-dir -r requirements_lightweight.txt
+
+# Copy application code
+COPY api_lightweight.py .
+COPY extract_text.py .
+
+# Set environment variables
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV PYTHONUNBUFFERED=1
+
+# Expose port
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+# Run the lightweight application
+CMD ["python", "api_lightweight.py"]
